@@ -9,7 +9,8 @@ export async function up(knex: Knex): Promise<void> {
     table.foreign("category_id").references("categories.id");
     table.string("description").notNullable();
     table.string("image").notNullable();
-    table.json("rating").notNullable();
+    table.decimal("rate");
+    table.decimal("count");
   });
 }
 

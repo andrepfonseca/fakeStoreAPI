@@ -9,15 +9,14 @@ interface Product {
   price: number;
   description: string;
   image: string;
-  rating: string;
+  rating?: {
+    rate?: number;
+    count?: number;
+  };
+  rate?: number;
+  count?: number;
+  category_id?: number;
+  category?: string;
 }
 
-interface ProductForDB extends Product {
-  category_id: number;
-}
-
-interface ProductToReturn extends Product {
-  category: string;
-}
-
-export { Category, Product, ProductForDB, ProductToReturn };
+export { Category, Product };

@@ -6,17 +6,10 @@ const knexInstance: Knex = knex(config);
 
 async function seedProducts() {
   const response = await fetch("https://fakestoreapi.com/products");
-  const products: ProductToReturn[] = await response.json();
+  const products = await response.json();
 
   for (const product of products) {
-    const {
-      title,
-      price,
-      description,
-      image,
-      category,
-      rating,
-    }: ProductToReturn = product;
+    const { title, price, description, image, category, rating } = product;
 
     const categoryId = await knexInstance("categories")
       .select("id")
@@ -34,7 +27,8 @@ async function seedProducts() {
       description,
       image,
       category_id: categoryId.id,
-      rating,
+      rate: rating.rate,
+      count: rating.count,
     });
   }
 

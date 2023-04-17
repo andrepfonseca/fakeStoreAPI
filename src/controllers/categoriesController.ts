@@ -8,10 +8,11 @@ const knexInstance: Knex = knex(config);
 
 const index = async (_req: Request, res: Response): Promise<void> => {
   try {
-    const category: Category[] = await knexInstance("categories").select(
+    const categories: Category[] = await knexInstance("categories").select(
       "name"
     );
-    res.status(200).send(category);
+    const categoriesArray = categories.map((category) => category.name);
+    res.status(200).send(categoriesArray);
   } catch (error: any) {
     res.send(error.message ? { error: error.message } : error);
   }

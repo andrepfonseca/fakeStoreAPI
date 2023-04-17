@@ -1,7 +1,7 @@
 import { Router } from "express";
 import categoryController from "../controllers/categoryController";
-const router: Router = Router();
+const category: Router = Router();
 
-router.get("/:category", categoryController.showProducts);
+category.get("/:category", categoryController.show);
 
-export { router };
+export { category };
