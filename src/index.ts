@@ -5,7 +5,7 @@ const app: Express = express();
 
 app.use(express.json());
 
-app.use("/api/v1", router);
+app.use("/products", router);
 
 const port: number = 3000;
 

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import knex from "knex";
 import config from "../../knexfile";
-import { Category, Product, ProductForDB, ProductToReturn } from "../types";
+import { Category, ProductForDB, ProductToReturn } from "../types";
 
 const knexInstance = knex(config);
 
