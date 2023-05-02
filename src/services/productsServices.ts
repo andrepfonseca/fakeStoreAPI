@@ -102,7 +102,7 @@ const putProduct = async (product: Product) => {
 };
 
 const removeProduct = async (id: number) => {
-  const productId = productsRepositories.deleteProduct(id);
+  const productId = await productsRepositories.deleteProduct(id);
   if (!productId) throw new Error("Product does not exist");
   return productId;
 };

@@ -5,8 +5,8 @@ import { Product } from "../types";
 
 const knexInstance: Knex = knex(config);
 
-const selectAllProducts = async () =>
-  await knexInstance("products")
+const selectAllProducts = () =>
+  knexInstance("products")
     .select(
       "products.id",
       "products.title",
@@ -19,8 +19,8 @@ const selectAllProducts = async () =>
     )
     .join("categories", "categories.id", "=", "products.category_id");
 
-const selectProductById = async (id: number) =>
-  await knexInstance("products")
+const selectProductById = (id: number) =>
+  knexInstance("products")
     .select(
       "products.id",
       "products.title",
@@ -34,14 +34,14 @@ const selectProductById = async (id: number) =>
     .join("categories", "categories.id", "=", "products.category_id")
     .where({ "products.id": id });
 
-const insertProduct = async (product: Product) =>
-  await knexInstance("products").insert(product);
+const insertProduct = (product: Product) =>
+  knexInstance("products").insert(product);
 
-const updateProduct = async (product: Product) =>
-  await knexInstance("products").update(product).where({ id: product.id });
+const updateProduct = (product: Product) =>
+  knexInstance("products").update(product).where({ id: product.id });
 
-const deleteProduct = async (id: number) =>
-  await knexInstance("products").delete().where({ id });
+const deleteProduct = (id: number) =>
+  knexInstance("products").delete().where({ id });
 
 export default {
   selectAllProducts,
