@@ -1,14 +1,13 @@
 import { Request, Response } from "express";
-import knex from "knex";
-import config from "../../knexfile";
-import { Category, Product } from "../types";
+import { Product } from "../types";
 import productsServices from "../services/productsServices";
 
-const knexInstance = knex(config);
-
-const index = async (_req: Request, res: Response): Promise<void> => {
+const index = async (req: Request, res: Response): Promise<void> => {
   try {
-    const productsArray = await productsServices.getAllProducts();
+    const limit: any = req.query.limit;
+    const sort: any = req.query.sort;
+    const productsArray = await productsServices.getAllProducts(limit, sort);
+
     res.status(200).send(productsArray);
   } catch (error: any) {
     res.send(error.message ? { error: error.message } : error);
