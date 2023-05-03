@@ -4,7 +4,7 @@ import categoryRepositories from "../repositories/categoryRepositories";
 const getAllProductsFromCategory = async (categoryName: string) => {
   const id = await categoriesRepositories.selectCategoryIdByName(categoryName);
 
-  if (!id[0]) {
+  if (id.length === 0) {
     throw new Error(`Category not found!`);
   }
 

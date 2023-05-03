@@ -7,22 +7,28 @@ const knexInstance: Knex = knex(config);
 const selectAllCategoriesNames = () =>
   knexInstance("categories").select("name");
 
-const selectCategoryById = (id: number) =>
+const selectCategoryById = (
+  id: number
+): Promise<{ id: number; category: string }[]> =>
   knexInstance("categories").select("*").where({ "categories.id": id });
 
-const selectCategoryIdByName = (name: any) =>
+const selectCategoryIdByName = (
+  name: string | undefined
+): Promise<{ id: number }[]> =>
   knexInstance("categories").select("id").where({ name });
 
-const selectCategoryByName = (name: string) =>
+const selectCategoryByName = (
+  name: string
+): Promise<{ id: number; category: string }[]> =>
   knexInstance("categories").select("*").where({ "categories.name": name });
 
-const insertCategory = (name: string) =>
+const insertCategory = (name: string): Promise<number[]> =>
   knexInstance("categories").insert({ name });
 
-const updateCategory = (name: string, id: number) =>
+const updateCategory = (name: string, id: number): Promise<number> =>
   knexInstance("categories").update({ name }).where({ id });
 
-const deleteCategory = (id: number) =>
+const deleteCategory = (id: number): Promise<number> =>
   knexInstance("categories").delete().where({ id });
 
 export default {

@@ -1,17 +1,25 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import categoriesServices from "../services/categoriesServices";
 
-const index = async (_req: Request, res: Response): Promise<void> => {
+const index = async (
+  _req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     const categoriesArray = await categoriesServices.getCategoriesNames();
 
     res.status(200).send(categoriesArray);
   } catch (error: any) {
-    res.send(error.message ? { error: error.message } : error);
+    next(error);
   }
 };
 
-const show = async (req: Request, res: Response): Promise<void> => {
+const show = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     const id: number = parseInt(req.params.id);
 
@@ -19,11 +27,15 @@ const show = async (req: Request, res: Response): Promise<void> => {
 
     res.status(200).send(category);
   } catch (error: any) {
-    res.send(error.message ? { error: error.message } : error);
+    next(error);
   }
 };
 
-const insert = async (req: Request, res: Response): Promise<void> => {
+const insert = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     const { name }: { name: string } = req.body;
 
@@ -31,11 +43,15 @@ const insert = async (req: Request, res: Response): Promise<void> => {
 
     res.status(201).send(createdCategory);
   } catch (error: any) {
-    res.send(error.message ? { error: error.message } : error);
+    next(error);
   }
 };
 
-const update = async (req: Request, res: Response): Promise<void> => {
+const update = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     const id: number = parseInt(req.params.id);
     const { name }: { name: string } = req.body;
@@ -44,11 +60,15 @@ const update = async (req: Request, res: Response): Promise<void> => {
 
     res.status(201).send(category);
   } catch (error: any) {
-    res.send(error.message ? { error: error.message } : error);
+    next(error);
   }
 };
 
-const remove = async (req: Request, res: Response): Promise<void> => {
+const remove = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     const id: number = parseInt(req.params.id);
 
@@ -56,7 +76,7 @@ const remove = async (req: Request, res: Response): Promise<void> => {
 
     res.status(200).json(category);
   } catch (error: any) {
-    res.send(error.message ? { error: error.message } : error);
+    next(error);
   }
 };
 

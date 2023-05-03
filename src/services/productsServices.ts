@@ -55,11 +55,11 @@ const postProduct = async (productToInsert: Product) => {
   const categoryName = await categoriesRepositories.selectCategoryIdByName(
     category
   );
-  const categoryId: number | undefined = categoryName[0].id;
-
-  if (!categoryId) {
-    throw new Error(`Category ${categoryName} does not exists`);
+  if (categoryName.length === 0) {
+    throw new Error(`Category ${category} does not exists`);
   }
+
+  const categoryId: number = categoryName[0].id;
 
   const product = {
     category_id: categoryId,
@@ -80,11 +80,14 @@ const postProduct = async (productToInsert: Product) => {
 const putProduct = async (product: Product) => {
   const { category, rating, id, ...data } = product;
 
-  const selectedCategory = await categoriesRepositories.selectCategoryIdByName(
-    category
-  );
-  const categoryId: number | undefined = selectedCategory[0].id;
+  const selectedCategory: {
+    id: number;
+  }[] = await categoriesRepositories.selectCategoryIdByName(category);
+  if (selectedCategory.length === 0) {
+    throw new Error(`Category ${category} does not exists`);
+  }
 
+  const categoryId: number = selectedCategory[0].id;
   if (!categoryId) {
     throw new Error(`Category ${category} does not exists`);
   }
