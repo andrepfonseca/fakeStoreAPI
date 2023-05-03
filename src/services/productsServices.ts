@@ -2,7 +2,7 @@ import productsRepositories from "../repositories/productsRepositories";
 import categoriesRepositories from "../repositories/categoriesRepositories";
 import { Product } from "../types";
 
-const getAllProducts = async (limit = 0, sort = "asc") => {
+const getAllProducts = async ({ limit = 0, sort = "asc" }) => {
   const products = await productsRepositories.selectAllProducts();
   let formattedProduct: Product[] = products.map((product: Product) => {
     return {
@@ -18,6 +18,8 @@ const getAllProducts = async (limit = 0, sort = "asc") => {
       },
     };
   });
+
+  //Alterar utilizando imutabilidade
   if (limit != 0) {
     formattedProduct = formattedProduct.slice(0, limit);
   }

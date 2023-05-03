@@ -6,7 +6,10 @@ const index = async (req: Request, res: Response): Promise<void> => {
   try {
     const limit: any = req.query.limit;
     const sort: any = req.query.sort;
-    const productsArray = await productsServices.getAllProducts(limit, sort);
+    const productsArray = await productsServices.getAllProducts({
+      limit,
+      sort,
+    });
 
     res.status(200).send(productsArray);
   } catch (error: any) {
