@@ -52,6 +52,7 @@ const getProductById = async (id: number) => {
 
 const postProduct = async (productToInsert: Product) => {
   const { category, rating, ...data } = productToInsert;
+
   const categoryName = await categoriesRepositories.selectCategoryIdByName(
     category
   );
@@ -59,22 +60,18 @@ const postProduct = async (productToInsert: Product) => {
     throw new Error(`Category ${category} does not exists`);
   }
 
-  const categoryId: number = categoryName[0].id;
-
-  const product = {
-    category_id: categoryId,
+  const productId = await productsRepositories.insertProduct({
+    category_id: categoryName[0].id,
     ...rating,
     ...data,
-  };
-  const productId = await productsRepositories.insertProduct(product);
+  });
 
-  const productWithId = {
+  return {
     id: productId[0],
     category,
     ...data,
     rating,
   };
-  return productWithId;
 };
 
 const putProduct = async (product: Product) => {

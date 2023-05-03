@@ -42,17 +42,9 @@ const insert = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { title, price, description, category, image, rating } = req.body;
-    const newProduct = {
-      title,
-      price,
-      description,
-      image,
-      rating,
-      category,
-    };
+    const product = req.body;
 
-    const insertedProduct = await productsServices.postProduct(newProduct);
+    const insertedProduct = await productsServices.postProduct(product);
 
     res.status(201).send(insertedProduct);
   } catch (error: any) {
