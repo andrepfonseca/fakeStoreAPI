@@ -18,6 +18,12 @@ router.put(
   middleware.productDataValidator,
   productsController.update
 );
+router.patch(
+  "/:id",
+  middleware.idDataValidator,
+  middleware.partialProductDataValidator,
+  productsController.patch
+);
 router.delete("/:id", middleware.idDataValidator, productsController.remove);
 
 export { router };
