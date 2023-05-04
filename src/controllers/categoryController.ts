@@ -7,10 +7,10 @@ const show = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const category: string = req.params.category;
+    const categoryName: string = req.params.category;
 
     const productsFromCategory =
-      await categoryServices.getAllProductsFromCategory(category);
+      await categoryServices.getAllProductsFromCategory(categoryName);
 
     res.status(200).send(productsFromCategory);
   } catch (error: any) {
