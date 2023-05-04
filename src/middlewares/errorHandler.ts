@@ -6,11 +6,11 @@ export const errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  console.log("Entrou no error handler");
   const status = error.status ? error.status : 500;
   const errorResponse = {
     message: error.message ? error.message : "Internal server error",
     stack: error.stack,
   };
+
   res.status(status).json(errorResponse);
 };
