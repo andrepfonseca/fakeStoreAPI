@@ -8,13 +8,14 @@ const index = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const limit: any = req.query.limit;
-    const sort: any = req.query.sort;
+    const queryParams: any = {
+      limit: req.query.limit,
+      sort: req.query.sort,
+    };
 
-    const productsArray = await productsServices.getAllProducts({
-      limit,
-      sort,
-    });
+    const productsArray: Product[] = await productsServices.getAllProducts(
+      queryParams
+    );
 
     res.status(200).send(productsArray);
   } catch (error: any) {
@@ -30,7 +31,7 @@ const show = async (
   try {
     const id: number = parseInt(req.params.id);
 
-    const product = await productsServices.getProductById(id);
+    const product: Product = await productsServices.getProductById(id);
 
     res.status(200).send(product);
   } catch (error: any) {
@@ -44,9 +45,11 @@ const insert = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const product = req.body;
+    const product: Product = req.body;
 
-    const insertedProduct = await productsServices.postProduct(product);
+    const insertedProduct: Product = await productsServices.postProduct(
+      product
+    );
 
     res.status(201).send(insertedProduct);
   } catch (error: any) {
@@ -65,7 +68,30 @@ const update = async (
       product: req.body,
     };
 
-    const updatedProduct = await productsServices.putProduct(productObject);
+    const updatedProduct: Product = await productsServices.putProduct(
+      productObject
+    );
+
+    res.status(201).send(updatedProduct);
+  } catch (error: any) {
+    next(error);
+  }
+};
+
+const patch = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const productObject: { id: number; partialProduct: Product } = {
+      id: parseInt(req.params.id),
+      partialProduct: req.body,
+    };
+
+    const updatedProduct: Product = await productsServices.patchProduct(
+      productObject
+    );
 
     res.status(201).send(updatedProduct);
   } catch (error: any) {
@@ -91,4 +117,4 @@ const remove = async (
   }
 };
 
-export default { index, show, insert, update, remove };
+export default { index, show, insert, update, patch, remove };
