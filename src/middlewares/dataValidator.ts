@@ -19,7 +19,34 @@ const productDataValidator = async (
         count: number().required("Contagem é obrigatória"),
       }).required("Avaliação é obrigatória"),
     });
-    await productSchema.validate(productData);
+    await productSchema.validate(productData, { strict: true });
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
+const partialProductDataValidator = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const partialProductData = req.body;
+    const partialProductSchema = object({
+      id: number().typeError("Id must be a number"),
+      title: string().typeError("Title must be a string"),
+      price: number().typeError("Price must be a number"),
+      description: string().typeError("Description must be a string"),
+      category: string().typeError("Category must be a string"),
+      category_id: number().typeError("Category Id must be a number"),
+      image: string().typeError("Image must be a string"),
+      rating: object({
+        rate: number().typeError("Rate must be a number"),
+        count: number().typeError("Count must be a number"),
+      }),
+    });
+    await partialProductSchema.validate(partialProductData, { strict: true });
     next();
   } catch (error) {
     next(error);
@@ -40,7 +67,7 @@ const idDataValidator = async (
         .required("Id é obrigatório"),
     });
 
-    await paramsSchema.validate(paramsData);
+    await paramsSchema.validate(paramsData, { strict: true });
 
     next();
   } catch (error) {
@@ -58,7 +85,7 @@ const categoryDataValidator = async (
     const categorySchema = object({
       name: string().required("O nome da categoria é obrigatório"),
     });
-    await categorySchema.validate(categoryData);
+    await categorySchema.validate(categoryData, { strict: true });
     next();
   } catch (error) {
     next(error);
@@ -67,6 +94,7 @@ const categoryDataValidator = async (
 
 export default {
   productDataValidator,
+  partialProductDataValidator,
   idDataValidator,
   categoryDataValidator,
 };
