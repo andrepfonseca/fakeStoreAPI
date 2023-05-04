@@ -74,33 +74,25 @@ const postProduct = async (productToInsert: Product) => {
   };
 };
 
-const putProduct = async (product: Product) => {
-  const { category, rating, id, ...data } = product;
+const putProduct = async (productObject: { id: number; product: Product }) => {
+  const { id, product } = productObject;
+  const { category, rating, ...data } = product;
 
-  const selectedCategory: {
-    id: number;
-  }[] = await categoriesRepositories.selectCategoryIdByName(category);
+  const selectedCategory: { id: number }[] =
+    await categoriesRepositories.selectCategoryIdByName(category);
   if (selectedCategory.length === 0) {
     throw new Error(`Category ${category} does not exists`);
   }
 
-  const categoryId: number = selectedCategory[0].id;
-  if (!categoryId) {
-    throw new Error(`Category ${category} does not exists`);
-  }
-
-  const productToInsert = {
+  const insertedProductId = await productsRepositories.updateProduct({
     id,
-    category_id: categoryId,
+    category_id: selectedCategory[0].id,
     ...data,
     ...rating,
-  };
-  const insertedProductId = await productsRepositories.updateProduct(
-    productToInsert
-  );
-
+  });
   if (!insertedProductId) throw new Error("Product does not exist");
-  return product;
+
+  return { id, ...product };
 };
 
 const removeProduct = async (id: number) => {
