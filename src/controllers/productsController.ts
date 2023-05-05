@@ -45,7 +45,7 @@ const insert = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const product: Product = req.body;
+    const product: Product = req.body.product;
 
     const insertedProduct: Product = await productsServices.postProduct(
       product
@@ -65,7 +65,7 @@ const update = async (
   try {
     const productObject: { id: number; product: Product } = {
       id: parseInt(req.params.id),
-      product: req.body,
+      product: req.body.product,
     };
 
     const updatedProduct: Product = await productsServices.putProduct(
@@ -86,7 +86,7 @@ const patch = async (
   try {
     const productObject: { id: number; partialProduct: Product } = {
       id: parseInt(req.params.id),
-      partialProduct: req.body,
+      partialProduct: req.body.product,
     };
 
     const updatedProduct: Product = await productsServices.patchProduct(

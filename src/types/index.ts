@@ -19,4 +19,11 @@ interface Product {
   category?: string;
 }
 
-export { Category, Product };
+interface User {
+  id?: number;
+  name: string;
+  email: string;
+  password: string;
+}
+
+export { Category, Product, User };

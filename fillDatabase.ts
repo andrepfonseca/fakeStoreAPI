@@ -1,6 +1,5 @@
 import knex, { Knex } from "knex";
 import config from "./knexfile";
-import { ProductToReturn } from "./src/types";
 
 const knexInstance: Knex = knex(config);
 
