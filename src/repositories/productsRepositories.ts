@@ -5,7 +5,7 @@ import { Product } from "../types";
 
 const knexInstance: Knex = knex(config);
 
-const selectAllProducts = () =>
+const selectAllProducts = (): Promise<Product[]> =>
   knexInstance("products")
     .select(
       "products.id",
@@ -19,7 +19,7 @@ const selectAllProducts = () =>
     )
     .join("categories", "categories.id", "=", "products.category_id");
 
-const selectProductById = (id: number) =>
+const selectProductById = (id: number): Promise<Product[]> =>
   knexInstance("products")
     .select(
       "products.id",
@@ -34,13 +34,13 @@ const selectProductById = (id: number) =>
     .join("categories", "categories.id", "=", "products.category_id")
     .where({ "products.id": id });
 
-const insertProduct = (product: Product) =>
+const insertProduct = (product: Product): Promise<number[]> =>
   knexInstance("products").insert(product);
 
-const updateProduct = (product: Product) =>
+const updateProduct = (product: Product): Promise<number> =>
   knexInstance("products").update(product).where({ id: product.id });
 
-const deleteProduct = (id: number) =>
+const deleteProduct = (id: number): Promise<number> =>
   knexInstance("products").delete().where({ id });
 
 export default {

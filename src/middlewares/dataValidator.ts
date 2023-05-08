@@ -39,7 +39,6 @@ const partialProductDataValidator = async (
       price: number().typeError("Price must be a number"),
       description: string().typeError("Description must be a string"),
       category: string().typeError("Category must be a string"),
-      category_id: number().typeError("Category Id must be a number"),
       image: string().typeError("Image must be a string"),
       rating: object({
         rate: number().typeError("Rate must be a number"),

@@ -1,15 +1,16 @@
 import knex from "knex";
 import { Knex } from "knex";
 import config from "../../knexfile";
+import { Category } from "../types";
 
 const knexInstance: Knex = knex(config);
 
-const selectAllCategoriesNames = () =>
+const selectAllCategoriesNames = (): Promise<Category[]> =>
   knexInstance("categories").select("name");
 
 const selectCategoryById = (
   id: number
-): Promise<{ id: number; category: string }[]> =>
+): Promise<{ id: number; name: string }[]> =>
   knexInstance("categories").select("*").where({ "categories.id": id });
 
 const selectCategoryIdByName = (
@@ -19,7 +20,7 @@ const selectCategoryIdByName = (
 
 const selectCategoryByName = (
   name: string
-): Promise<{ id: number; category: string }[]> =>
+): Promise<{ id: number; name: string }[]> =>
   knexInstance("categories").select("*").where({ "categories.name": name });
 
 const insertCategory = (name: string): Promise<number[]> =>

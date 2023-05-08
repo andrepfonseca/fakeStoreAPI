@@ -15,7 +15,7 @@ const authToken = async (req: Request, res: Response, next: NextFunction) => {
     const isTokenValid = jwt.verify(token, process.env.SECRET_TOKEN!);
     if (!isTokenValid) throw new Error("Invalid token");
 
-    const decoded: any = jwt_decode(token);
+    const decoded: { user: { id: number } } = jwt_decode(token);
 
     if (decoded.user.id == req.body.user.id) {
       next();

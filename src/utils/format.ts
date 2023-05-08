@@ -1,8 +1,8 @@
 import categoriesRepositories from "../repositories/categoriesRepositories";
 import { Product } from "../types";
 
-const formatProductForDB = async (product: Product) => {
-  const { ...newProduct } = product;
+const formatProductForDB = async (product: Product): Promise<Product> => {
+  const { ...newProduct }: Product = product;
   let rating;
   if (newProduct.rating) {
     rating = newProduct.rating;
@@ -21,7 +21,7 @@ const formatProductForDB = async (product: Product) => {
     categoryId = category[0].id;
   }
 
-  if (newProduct.category_id) categoryId = newProduct.category_id;
+  if (newProduct.category_id) delete newProduct.category_id;
 
   return {
     ...newProduct,
@@ -32,8 +32,8 @@ const formatProductForDB = async (product: Product) => {
 
 const formatProductForResponse = (obj: {
   product: Product;
-  category?: any;
-}) => {
+  category?: string;
+}): Product => {
   const { ...newProduct } = obj.product;
   let rating;
 

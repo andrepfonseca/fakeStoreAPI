@@ -45,7 +45,7 @@ const putProduct = async (productObject: {
   id: number;
   product: Product;
 }): Promise<Product> => {
-  const { id, product } = productObject;
+  const { id, product }: { id: number; product: Product } = productObject;
 
   const formattedProduct: Product = await format.formatProductForDB(product);
   formattedProduct.id = id;
@@ -66,7 +66,8 @@ const patchProduct = async (productObject: {
   id: number;
   partialProduct: Product;
 }): Promise<Product> => {
-  const { id, partialProduct } = productObject;
+  const { id, partialProduct }: { id: number; partialProduct: Product } =
+    productObject;
   const partialProductFormatted: Product = await format.formatProductForDB(
     partialProduct
   );

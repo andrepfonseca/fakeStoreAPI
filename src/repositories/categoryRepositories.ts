@@ -1,10 +1,11 @@
 import knex from "knex";
 import { Knex } from "knex";
 import config from "../../knexfile";
+import { Product } from "../types";
 
 const knexInstance: Knex = knex(config);
 
-const selectAllProductsFromCategory = (id: any) =>
+const selectAllProductsFromCategory = (id: number): Promise<Product[]> =>
   knexInstance("products")
     .select(
       "products.id",

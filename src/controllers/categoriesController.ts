@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import categoriesServices from "../services/categoriesServices";
+import { Category } from "../types";
 
 const index = async (
   _req: Request,
@@ -7,7 +8,8 @@ const index = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const categoriesArray = await categoriesServices.getCategoriesNames();
+    const categoriesArray: string[] =
+      await categoriesServices.getCategoriesNames();
 
     res.status(200).send(categoriesArray);
   } catch (error: any) {
@@ -23,7 +25,7 @@ const show = async (
   try {
     const id: number = parseInt(req.params.id);
 
-    const category = await categoriesServices.getCategoryById(id);
+    const category: Category = await categoriesServices.getCategoryById(id);
 
     res.status(200).send(category);
   } catch (error: any) {
@@ -38,8 +40,9 @@ const insert = async (
 ): Promise<void> => {
   try {
     const { name }: { name: string } = req.body.category;
-    console.log(name);
-    const createdCategory = await categoriesServices.createCategory(name);
+    const createdCategory: Category = await categoriesServices.createCategory(
+      name
+    );
 
     res.status(201).send(createdCategory);
   } catch (error: any) {
@@ -56,7 +59,7 @@ const update = async (
     const id: number = parseInt(req.params.id);
     const { name }: { name: string } = req.body.category;
 
-    const category = await categoriesServices.putCategory(name, id);
+    const category: Category = await categoriesServices.putCategory(name, id);
 
     res.status(201).send(category);
   } catch (error: any) {
@@ -72,9 +75,10 @@ const remove = async (
   try {
     const id: number = parseInt(req.params.id);
 
-    const category = await categoriesServices.removeCategory(id);
+    const message: { message: string } =
+      await categoriesServices.removeCategory(id);
 
-    res.status(200).json(category);
+    res.status(200).json(message);
   } catch (error: any) {
     next(error);
   }

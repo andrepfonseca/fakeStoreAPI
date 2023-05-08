@@ -6,6 +6,7 @@ const router: Router = Router();
 
 router.use("/products", productsRoutes);
 router.post("/users", usersController.insert);
+router.put("/users/:id", usersController.update);
 router.post("/users/login", usersController.login);
 
 export { router };

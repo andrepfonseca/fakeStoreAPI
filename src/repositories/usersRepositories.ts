@@ -5,12 +5,17 @@ import { User } from "../types";
 
 const knexInstance: Knex = knex(config);
 
-const selectUserByEmail = (user: User) =>
+const selectUserByEmail = (user: User): Promise<User[]> =>
   knexInstance("users").select("*").where({ "users.email": user.email });
 
-const putUser = (user: User) => knexInstance("users").insert(user);
+const insertUser = (user: User): Promise<number[]> =>
+  knexInstance("users").insert(user);
+
+const updateUser = (user: User): Promise<number> =>
+  knexInstance("users").update(user).where({ id: user.id });
 
 export default {
-  putUser,
+  insertUser,
   selectUserByEmail,
+  updateUser,
 };

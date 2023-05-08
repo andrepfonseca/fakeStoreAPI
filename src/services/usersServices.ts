@@ -4,23 +4,42 @@ import usersRepositories from "../repositories/usersRepositories";
 import { User } from "../types";
 
 const insertUser = async (user: User): Promise<User> => {
-  const { ...userForDB } = user;
-  const hashedPassword = await bcrypt.hash(user.password, 10);
+  const { ...userForDB }: User = user;
+  const hashedPassword: string = await bcrypt.hash(user.password, 10);
   userForDB.password = hashedPassword;
 
-  const userId = await usersRepositories.putUser(userForDB);
+  const userId: number[] = await usersRepositories.insertUser(userForDB);
   if (userId.length === 0) throw new Error("Error creating user");
 
   userForDB.id = userId[0];
   return userForDB;
 };
 
+const putUser = async ({
+  user,
+  userId,
+}: {
+  user: User;
+  userId: number;
+}): Promise<{ user: User }> => {
+  const { ...userToUpdate }: User = user;
+  userToUpdate.id = userId;
+  const updatedUser: number = await usersRepositories.updateUser(userToUpdate);
+  if (!updatedUser)
+    throw new Error("Failed to update product or product does not exist");
+
+  return { user: userToUpdate };
+};
+
 const loginUser = async (user: User): Promise<string | undefined> => {
-  const { ...userToLogin } = user;
-  const userFromDB = await usersRepositories.selectUserByEmail(userToLogin);
+  const { ...userToLogin }: User = user;
+  const userFromDB: User[] = await usersRepositories.selectUserByEmail(
+    userToLogin
+  );
   if (userFromDB.length === 0) {
     throw new Error("User not found");
   }
+
   let token;
   if (await bcrypt.compare(userToLogin.password, userFromDB[0].password)) {
     token = jwt.sign(
@@ -36,6 +55,7 @@ const loginUser = async (user: User): Promise<string | undefined> => {
       { expiresIn: "7 days" }
     );
   }
+
   if (token) {
     return token;
   } else {
@@ -45,5 +65,6 @@ const loginUser = async (user: User): Promise<string | undefined> => {
 
 export default {
   insertUser,
+  putUser,
   loginUser,
 };

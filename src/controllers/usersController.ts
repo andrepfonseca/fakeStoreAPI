@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import usersServices from "../services/usersServices";
+import { User } from "../types";
 
 const insert = async (
   req: Request,
@@ -7,9 +8,26 @@ const insert = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const user = await usersServices.insertUser(req.body.user);
+    const user: User = await usersServices.insertUser(req.body.user);
 
     res.status(201).send(user);
+  } catch (error: any) {
+    next(error);
+  }
+};
+
+const update = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const updatedUser: { user: User } = await usersServices.putUser({
+      user: req.body.user,
+      userId: parseInt(req.params.id),
+    });
+
+    res.status(201).send(updatedUser);
   } catch (error: any) {
     next(error);
   }
@@ -21,11 +39,14 @@ const login = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const token = await usersServices.loginUser(req.body.user);
+    const token: string | undefined = await usersServices.loginUser(
+      req.body.user
+    );
+
     res.send(token);
   } catch (error: any) {
     next(error);
   }
 };
 
-export default { insert, login };
+export default { insert, login, update };
