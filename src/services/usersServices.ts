@@ -13,8 +13,10 @@ const postUser = async (user: User): Promise<User> => {
   const userId: number[] = await usersRepositories.insertUser(userForDB);
   if (userId.length === 0) throw new Error("Error creating user");
 
-  userForDB.id = userId[0];
-  return userForDB;
+  const { ...userToReturn }: any = userForDB;
+  userToReturn.id = userId[0];
+  delete userToReturn.password;
+  return userToReturn;
 };
 
 const putUser = async ({
