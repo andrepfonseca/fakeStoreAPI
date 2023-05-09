@@ -9,7 +9,7 @@ const getAllProductsFromCategory = async (
   const id: { id: number }[] =
     await categoriesRepositories.selectCategoryIdByName(categoryName);
   if (id.length === 0) {
-    throw new Error(`Category not found!`);
+    throw new Error("Category not found!");
   }
 
   const products: Product[] =

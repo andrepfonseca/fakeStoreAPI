@@ -1,0 +1,8 @@
+{
+    "jestrunner.debugOptions": {
+
+    },
+    "jestrunner.runOptions": [
+        "--detectOpenHandles"
+    ]
+}

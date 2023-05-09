@@ -17,11 +17,7 @@ const authToken = async (req: Request, res: Response, next: NextFunction) => {
 
     const decoded: { user: { id: number } } = jwt_decode(token);
 
-    if (decoded.user.id == req.body.user.id) {
-      next();
-    } else {
-      throw new Error("Invalid user");
-    }
+    next();
   } catch (error) {
     next(error);
   }

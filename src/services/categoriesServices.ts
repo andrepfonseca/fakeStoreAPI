@@ -1,4 +1,5 @@
 import categoriesRepositories from "../repositories/categoriesRepositories";
+import { category } from "../routes/category";
 import { Category } from "../types";
 
 const getCategoriesNames = async (): Promise<string[]> => {
@@ -41,21 +42,21 @@ const createCategory = async (
 };
 
 const putCategory = async (
-  name: string,
-  id: number
+  category: Category
 ): Promise<{ id: number; name: string }> => {
   const searchCategoryByName: Category[] =
-    await categoriesRepositories.selectCategoryByName(name);
+    await categoriesRepositories.selectCategoryByName(category.name);
 
   if (!searchCategoryByName.length) {
     const updatedCategory: number = await categoriesRepositories.updateCategory(
-      name,
-      id
+      {
+        ...category,
+      }
     );
 
     if (!updatedCategory) throw new Error("Could not update category");
 
-    return { id, name: name };
+    return { id: category.id!, name: category.name };
   }
 
   throw new Error("Category name already exists");

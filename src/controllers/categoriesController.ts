@@ -39,7 +39,7 @@ const insert = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { name }: { name: string } = req.body.category;
+    const { name }: { name: string } = req.body;
     const createdCategory: Category = await categoriesServices.createCategory(
       name
     );
@@ -57,7 +57,7 @@ const update = async (
 ): Promise<void> => {
   try {
     const id: number = parseInt(req.params.id);
-    const { name }: { name: string } = req.body.category;
+    const { name }: { name: string } = req.body;
 
     const category: Category = await categoriesServices.putCategory(name, id);
 

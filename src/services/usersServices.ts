@@ -1,11 +1,12 @@
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import usersRepositories from "../repositories/usersRepositories";
+import hash from "../utils/hash";
+import tokenGenerator from "../utils/token";
 import { User } from "../types";
 
-const insertUser = async (user: User): Promise<User> => {
+const postUser = async (user: User): Promise<User> => {
   const { ...userForDB }: User = user;
-  const hashedPassword: string = await bcrypt.hash(user.password, 10);
+  const hashedPassword: string = await hash.hash(userForDB.password);
   userForDB.password = hashedPassword;
 
   const userId: number[] = await usersRepositories.insertUser(userForDB);
@@ -21,14 +22,14 @@ const putUser = async ({
 }: {
   user: User;
   userId: number;
-}): Promise<{ user: User }> => {
+}): Promise<User> => {
   const { ...userToUpdate }: User = user;
   userToUpdate.id = userId;
   const updatedUser: number = await usersRepositories.updateUser(userToUpdate);
   if (!updatedUser)
-    throw new Error("Failed to update product or product does not exist");
+    throw new Error("Failed to update user or user does not exist");
 
-  return { user: userToUpdate };
+  return userToUpdate;
 };
 
 const loginUser = async (user: User): Promise<string | undefined> => {
@@ -42,18 +43,7 @@ const loginUser = async (user: User): Promise<string | undefined> => {
 
   let token;
   if (await bcrypt.compare(userToLogin.password, userFromDB[0].password)) {
-    token = jwt.sign(
-      {
-        user: {
-          id: userFromDB[0].id,
-          name: userFromDB[0].name,
-          email: userFromDB[0].email,
-          password: userFromDB[0].password,
-        },
-      },
-      process.env.SECRET_TOKEN!,
-      { expiresIn: "7 days" }
-    );
+    token = tokenGenerator.generateToken(userFromDB[0]);
   }
 
   if (token) {
@@ -64,7 +54,7 @@ const loginUser = async (user: User): Promise<string | undefined> => {
 };
 
 export default {
-  insertUser,
+  postUser,
   putUser,
   loginUser,
 };
