@@ -12,7 +12,7 @@ const formatProductForDB = async (product: Product): Promise<Product> => {
 
   let categoryId;
   if (newProduct.category && !newProduct.category_id) {
-    let category = await categoriesRepositories.selectCategoryIdByName(
+    const category = await categoriesRepositories.selectCategoryIdByName(
       newProduct.category
     );
     if (category.length === 0) {

@@ -28,7 +28,7 @@ describe("Product tests", () => {
       const result: Product[] = await productsServices.getAllProducts({
         sort: "desc",
       });
-      let formatted: Product[] = result.map(() =>
+      const formatted: Product[] = result.map(() =>
         format.formatProductForResponse({
           product: paramsWithoutRating,
         })
@@ -46,7 +46,7 @@ describe("Product tests", () => {
       const result: Product[] = await productsServices.getAllProducts({
         limit,
       });
-      let formatted: Product[] = result.map(() =>
+      const formatted: Product[] = result.map(() =>
         format.formatProductForResponse({
           product: paramsWithoutRating,
         })

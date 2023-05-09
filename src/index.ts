@@ -10,6 +10,6 @@ app.use(express.json());
 app.use("/", router);
 app.use(errorHandler);
 
-const port: number = 3000;
+const port = 3000;
 
 app.listen(port, () => console.log(`App Listening on port ${port}...`));
