@@ -7,7 +7,7 @@ const productDataValidator = async (
   next: NextFunction
 ) => {
   try {
-    const { ...productData } = req.body.product;
+    const { ...productData } = req.body;
 
     const productSchema: ObjectSchema<{
       title: string;
@@ -45,7 +45,7 @@ const partialProductDataValidator = async (
   next: NextFunction
 ) => {
   try {
-    const { ...partialProductData } = req.body.product;
+    const { ...partialProductData } = req.body;
 
     const partialProductSchema = object({
       id: number().typeError("Id must be a number"),
@@ -98,7 +98,7 @@ const categoryDataValidator = async (
   next: NextFunction
 ) => {
   try {
-    const { ...categoryData } = req.body.category;
+    const { ...categoryData } = req.body;
 
     const categorySchema: ObjectSchema<{
       name: string;

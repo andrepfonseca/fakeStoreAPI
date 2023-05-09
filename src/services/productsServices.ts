@@ -78,9 +78,12 @@ const patchProduct = async (productObject: {
     );
   partialProductFormatted.id = id;
 
+  console.log(partialProductFormatted);
+
   const hasProductUpdated: number = await productsRepositories.updateProduct(
     partialProductFormatted
   );
+  console.log(partialProductFormatted.id);
   if (!hasProductUpdated) throw new Error("Could not update product");
 
   const patchedProduct: Product[] =

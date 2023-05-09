@@ -27,7 +27,7 @@ const insertCategory = (name: string): Promise<number[]> =>
   knexInstance("categories").insert({ name });
 
 const updateCategory = (category: Category): Promise<number> =>
-  knexInstance("categories").update(category.name).where(category.id!);
+  knexInstance("categories").update(category).where({ id: category.id });
 
 const deleteCategory = (id: number): Promise<number> =>
   knexInstance("categories").delete().where({ id });

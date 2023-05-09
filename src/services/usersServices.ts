@@ -31,7 +31,10 @@ const putUser = async ({
   if (!updatedUser)
     throw new Error("Failed to update user or user does not exist");
 
-  return userToUpdate;
+  const userToReturn: any = { ...userToUpdate };
+  delete userToReturn.password;
+
+  return userToReturn;
 };
 
 const loginUser = async (user: User): Promise<string | undefined> => {

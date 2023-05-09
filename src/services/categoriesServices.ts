@@ -39,12 +39,10 @@ const createCategory = async (name: string): Promise<Category> => {
 const putCategory = async (category: Category): Promise<Category> => {
   const searchCategoryByName: Category[] =
     await categoriesRepositories.selectCategoryByName(category.name);
-
   if (!searchCategoryByName.length) {
+    console.log(searchCategoryByName);
     const updatedCategory: number = await categoriesRepositories.updateCategory(
-      {
-        ...category,
-      }
+      category
     );
     if (!updatedCategory) throw new Error("Could not update category");
 
