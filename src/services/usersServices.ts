@@ -15,7 +15,7 @@ const postUser = async (user: User): Promise<User> => {
 
   const { ...userToReturn }: any = userForDB;
   userToReturn.id = userId[0];
-  delete userToReturn.password;
+
   return userToReturn;
 };
 
@@ -33,13 +33,10 @@ const putUser = async ({
   if (!updatedUser)
     throw new Error("Failed to update user or user does not exist");
 
-  const userToReturn: any = { ...userToUpdate };
-  delete userToReturn.password;
-
-  return userToReturn;
+  return userToUpdate;
 };
 
-const loginUser = async (user: User): Promise<string | undefined> => {
+const loginUser = async (user: User): Promise<{ token: string }> => {
   const { ...userToLogin }: User = user;
 
   const userFromDB: User[] = await usersRepositories.selectUserByEmail(
@@ -55,7 +52,7 @@ const loginUser = async (user: User): Promise<string | undefined> => {
   }
 
   if (token) {
-    return token;
+    return { token };
   } else {
     throw new Error("Could not generate token");
   }

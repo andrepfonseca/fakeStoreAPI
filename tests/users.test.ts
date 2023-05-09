@@ -12,7 +12,7 @@ describe("Users tests", () => {
       jest.spyOn(usersRepositories, "insertUser").mockResolvedValueOnce([1]);
       jest.spyOn(hash, "hash").mockResolvedValueOnce(userWithoutId.password);
 
-      const result: User = await usersServices.postUser(userWithoutId);
+      const result = await usersServices.postUser(userWithoutId);
 
       expect(result).toMatchObject({ ...userWithoutId, id: 1 });
     });
@@ -71,11 +71,11 @@ describe("Users tests", () => {
 
       jest.spyOn(tokenGenerator, "generateToken").mockReturnValueOnce(token);
 
-      const result: string | undefined = await usersServices.loginUser({
+      const result: { token: string } = await usersServices.loginUser({
         ...userWithoutId,
       });
 
-      expect(result).toBe(token);
+      expect(result).toMatchObject({ token });
     });
 
     it(`should return "User not found" user email not found in DB`, async (): Promise<void> => {
@@ -84,7 +84,7 @@ describe("Users tests", () => {
         .mockResolvedValueOnce([]);
 
       try {
-        const result: string | undefined = await usersServices.loginUser({
+        const result: { token: string } = await usersServices.loginUser({
           ...userWithoutId,
         });
       } catch (error: any) {
@@ -102,7 +102,7 @@ describe("Users tests", () => {
 
       jest.spyOn(tokenGenerator, "generateToken").mockReturnValueOnce(token);
       try {
-        const result: string | undefined = await usersServices.loginUser({
+        const result: { token: string } = await usersServices.loginUser({
           ...userWithoutId,
         });
       } catch (error: any) {

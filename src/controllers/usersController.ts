@@ -45,9 +45,7 @@ const login = async (
   try {
     const { ...userToLogin }: User = req.body;
 
-    const token: string | undefined = await usersServices.loginUser(
-      userToLogin
-    );
+    const token: { token: string } = await usersServices.loginUser(userToLogin);
 
     res.send(token);
   } catch (error: any) {

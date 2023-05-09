@@ -40,7 +40,6 @@ const putCategory = async (category: Category): Promise<Category> => {
   const searchCategoryByName: Category[] =
     await categoriesRepositories.selectCategoryByName(category.name);
   if (!searchCategoryByName.length) {
-    console.log(searchCategoryByName);
     const updatedCategory: number = await categoriesRepositories.updateCategory(
       category
     );
