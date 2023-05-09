@@ -1,14 +1,25 @@
 import { NextFunction, Request, Response } from "express";
-import { object, string, number } from "yup";
+import { object, string, number, ObjectSchema } from "yup";
 
 const productDataValidator = async (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ) => {
   try {
-    const productData = req.body.product;
-    const productSchema = object({
+    const { ...productData } = req.body.product;
+
+    const productSchema: ObjectSchema<{
+      title: string;
+      price: number;
+      description: string;
+      category: string;
+      image: string;
+      rating: {
+        rate: number;
+        count: number;
+      };
+    }> = object({
       title: string().required("Título é obrigatório"),
       price: number().required("Preço é obrigatório"),
       description: string().required("Descrição é obrigatória"),
@@ -19,7 +30,9 @@ const productDataValidator = async (
         count: number().required("Contagem é obrigatória"),
       }).required("Avaliação é obrigatória"),
     });
+
     await productSchema.validate(productData, { strict: true });
+
     next();
   } catch (error) {
     next(error);
@@ -28,11 +41,12 @@ const productDataValidator = async (
 
 const partialProductDataValidator = async (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ) => {
   try {
-    const partialProductData = req.body.product;
+    const { ...partialProductData } = req.body.product;
+
     const partialProductSchema = object({
       id: number().typeError("Id must be a number"),
       title: string().typeError("Title must be a string"),
@@ -45,7 +59,9 @@ const partialProductDataValidator = async (
         count: number().typeError("Count must be a number"),
       }),
     });
+
     await partialProductSchema.validate(partialProductData, { strict: true });
+
     next();
   } catch (error) {
     next(error);
@@ -54,13 +70,15 @@ const partialProductDataValidator = async (
 
 const idDataValidator = async (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ) => {
   try {
-    const paramsData = { id: parseInt(req.params.id) };
+    const { ...paramsData } = { id: parseInt(req.params.id) };
 
-    const paramsSchema = object({
+    const paramsSchema: ObjectSchema<{
+      id: number;
+    }> = object({
       id: number()
         .typeError("O id deve ser um número")
         .required("Id é obrigatório"),
@@ -76,15 +94,20 @@ const idDataValidator = async (
 
 const categoryDataValidator = async (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ) => {
   try {
-    const categoryData = req.body.category;
-    const categorySchema = object({
+    const { ...categoryData } = req.body.category;
+
+    const categorySchema: ObjectSchema<{
+      name: string;
+    }> = object({
       name: string().required("O nome da categoria é obrigatório"),
     });
+
     await categorySchema.validate(categoryData, { strict: true });
+
     next();
   } catch (error) {
     next(error);

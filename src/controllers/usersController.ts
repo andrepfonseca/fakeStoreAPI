@@ -8,7 +8,9 @@ const insert = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const user: User = await usersServices.postUser(req.body);
+    const { ...userToInsert }: User = req.body;
+
+    const user: User = await usersServices.postUser(userToInsert);
 
     res.status(201).send(user);
   } catch (error: any) {
@@ -22,10 +24,12 @@ const update = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const updatedUser: User = await usersServices.putUser({
+    const userToUpdate: { user: User; userId: number } = {
       user: req.body,
       userId: parseInt(req.params.id),
-    });
+    };
+
+    const updatedUser: User = await usersServices.putUser(userToUpdate);
 
     res.status(201).send(updatedUser);
   } catch (error: any) {
@@ -39,7 +43,11 @@ const login = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const token: string | undefined = await usersServices.loginUser(req.body);
+    const { ...userToLogin }: User = req.body;
+
+    const token: string | undefined = await usersServices.loginUser(
+      userToLogin
+    );
 
     res.send(token);
   } catch (error: any) {

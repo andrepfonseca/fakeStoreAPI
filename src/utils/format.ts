@@ -3,6 +3,7 @@ import { Product } from "../types";
 
 const formatProductForDB = async (product: Product): Promise<Product> => {
   const { ...newProduct }: Product = product;
+
   let rating;
   if (newProduct.rating) {
     rating = newProduct.rating;

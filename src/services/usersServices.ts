@@ -6,6 +6,7 @@ import { User } from "../types";
 
 const postUser = async (user: User): Promise<User> => {
   const { ...userForDB }: User = user;
+
   const hashedPassword: string = await hash.hash(userForDB.password);
   userForDB.password = hashedPassword;
 
@@ -25,6 +26,7 @@ const putUser = async ({
 }): Promise<User> => {
   const { ...userToUpdate }: User = user;
   userToUpdate.id = userId;
+
   const updatedUser: number = await usersRepositories.updateUser(userToUpdate);
   if (!updatedUser)
     throw new Error("Failed to update user or user does not exist");
@@ -34,6 +36,7 @@ const putUser = async ({
 
 const loginUser = async (user: User): Promise<string | undefined> => {
   const { ...userToLogin }: User = user;
+
   const userFromDB: User[] = await usersRepositories.selectUserByEmail(
     userToLogin
   );

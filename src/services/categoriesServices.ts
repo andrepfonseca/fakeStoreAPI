@@ -1,5 +1,4 @@
 import categoriesRepositories from "../repositories/categoriesRepositories";
-import { category } from "../routes/category";
 import { Category } from "../types";
 
 const getCategoriesNames = async (): Promise<string[]> => {
@@ -14,9 +13,7 @@ const getCategoriesNames = async (): Promise<string[]> => {
   return categoriesArray;
 };
 
-const getCategoryById = async (
-  id: number
-): Promise<{ id: number; name: string }> => {
+const getCategoryById = async (id: number): Promise<Category> => {
   const category: { id: number; name: string }[] =
     await categoriesRepositories.selectCategoryById(id);
   if (!category.length) {
@@ -26,9 +23,7 @@ const getCategoryById = async (
   return category[0];
 };
 
-const createCategory = async (
-  name: string
-): Promise<{ id: number; name: string }> => {
+const createCategory = async (name: string): Promise<Category> => {
   const searchCategoryByName: Category[] =
     await categoriesRepositories.selectCategoryByName(name);
 
@@ -41,9 +36,7 @@ const createCategory = async (
   throw new Error("Category already exists");
 };
 
-const putCategory = async (
-  category: Category
-): Promise<{ id: number; name: string }> => {
+const putCategory = async (category: Category): Promise<Category> => {
   const searchCategoryByName: Category[] =
     await categoriesRepositories.selectCategoryByName(category.name);
 
@@ -53,7 +46,6 @@ const putCategory = async (
         ...category,
       }
     );
-
     if (!updatedCategory) throw new Error("Could not update category");
 
     return { id: category.id!, name: category.name };

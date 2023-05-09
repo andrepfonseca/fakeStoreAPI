@@ -40,6 +40,7 @@ const insert = async (
 ): Promise<void> => {
   try {
     const { name }: { name: string } = req.body;
+
     const createdCategory: Category = await categoriesServices.createCategory(
       name
     );
@@ -59,7 +60,10 @@ const update = async (
     const id: number = parseInt(req.params.id);
     const { name }: { name: string } = req.body;
 
-    const category: Category = await categoriesServices.putCategory(name, id);
+    const category: Category = await categoriesServices.putCategory({
+      name,
+      id,
+    });
 
     res.status(201).send(category);
   } catch (error: any) {
