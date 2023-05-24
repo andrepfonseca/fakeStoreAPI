@@ -23,6 +23,21 @@ const index = async (
   }
 };
 
+const top3 = async (
+  _req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const productsArray: Product[] =
+      await productsServices.getBestSellingProducts();
+
+    res.status(200).send(productsArray);
+  } catch (error: any) {
+    next(error);
+  }
+};
+
 const show = async (
   req: Request,
   res: Response,
@@ -117,4 +132,4 @@ const remove = async (
   }
 };
 
-export default { index, show, insert, update, patch, remove };
+export default { index, top3, show, insert, update, patch, remove };

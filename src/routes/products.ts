@@ -11,6 +11,7 @@ router.use("/category", category);
 router.use("/categories", categories);
 
 router.get("/", productsController.index);
+router.get("/top3", productsController.top3);
 router.get("/:id", middleware.idDataValidator, productsController.show);
 router.post(
   "/",

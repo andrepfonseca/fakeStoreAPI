@@ -17,6 +17,21 @@ const getAllProducts = async ({
   return formattedProduct;
 };
 
+const getBestSellingProducts = async (): Promise<Product[]> => {
+  const products: Product[] = await productsRepositories.selectAllProducts();
+  const formattedProduct: Product[] = products.map((product: Product) =>
+    format.formatProductForResponse({ product })
+  );
+  formattedProduct.sort((a, b) => {
+    const countA = a.rating && a.rating.count ? a.rating.count : -Infinity;
+    const countB = b.rating && b.rating.count ? b.rating.count : -Infinity;
+    return countB - countA;
+  });
+  const top3Products: Product[] = formattedProduct.slice(0, 3);
+
+  return top3Products;
+};
+
 const getProductById = async (id: number): Promise<Product> => {
   const product: Product[] = await productsRepositories.selectProductById(id);
   if (!product.length) {
@@ -101,6 +116,7 @@ const removeProduct = async (id: number): Promise<number> => {
 
 export default {
   getAllProducts,
+  getBestSellingProducts,
   getProductById,
   postProduct,
   putProduct,
