@@ -26,4 +26,10 @@ interface User {
   password: string;
 }
 
-export { Category, Product, User };
+type ErrorType = {
+  message: string;
+  status: number;
+  stack?: string;
+};
+
+export { Category, Product, User, ErrorType };
