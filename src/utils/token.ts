@@ -8,7 +8,6 @@ const generateToken = (user: User): string =>
         id: user.id,
         name: user.name,
         email: user.email,
-        password: user.password,
       },
     },
     process.env.SECRET_TOKEN!,
